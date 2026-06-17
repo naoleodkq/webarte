@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OnSite</title>
+    <style>
+        body {
+            background-color: black; 
+            
+            transition: background-color 5s linear; 
+            
+            margin: 0;
+            height: 100vh;
+            
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <img src="imagem.jpg" alt="Imagem centralizada">
+
+
+    <script>
+        var audio = new Audio('onSight.mp3');
+
+        document.body.addEventListener('click', function() {audio.play();}, { once: true }); 
+        document.body.addEventListener('click', function() {document.body.style.backgroundColor = "red"}); 
+
+        
+    </script>
+
+</body>
+</html>
