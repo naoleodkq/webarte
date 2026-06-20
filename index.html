@@ -7,23 +7,43 @@
     <style>
         body {
             background-color: black; 
-            
-            transition: background-color 5s linear;
-            
+            /*transition: background-color 5s linear;*/
             margin: 0;
             height: 100vh;
-            
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
+            position: relative; /* texto em relacao ao body */
         }
 
         img {
             max-width: 5%;
-			transition: max-width 100s linear;
+            transition: max-width 100s linear;
             height: auto;
             box-shadow: 0 4px 8px rgba(0,0,0,0.5);
         }
+        
+        .kanye-text {
+            position: absolute;
+            color: red;
+            font-family: 'Arial', sans-serif;
+            font-weight: 600;
+            font-size: 2rem;
+            text-transform: uppercase;
+            pointer-events: none; /* nao da pra clicar no texto */
+        }
+		
+	
+		/* fundo vermelho */
+		body.bg-flash {
+			background-color: red;
+		}
+
+		/* quando estiver fundo vermelho, texto branco */
+		body.bg-flash .kanye-text {
+			color: white;
+		}
 		
     </style>
 </head>
@@ -33,15 +53,58 @@
 
     <script>
         var audio = new Audio('onSight.mp3');
+		
+		let blinkSpeed = 750; // Tempo inicial entre as piscadas (em milissegundos)
+		const minSpeed = 10;  // Limite máximo de velocidade (para não travar o navegador do usuário)
 
-        document.body.addEventListener('click', function() {audio.play();}, { once: true }); 
-        document.body.addEventListener('click', function() {document.body.style.backgroundColor = "red"});
-		document.body.addEventListener('click', () => document.getElementById('yeezus').style.maxWidth = '100%');
+        // criar e piscar texto
+        function flashKanyeText() {
+            const textEl = document.createElement('div');
+            textEl.innerText = "I MISS THE OLD KANYE";
+            textEl.className = 'kanye-text';
 
-        
-        
+            // posicao x e y aleatoria com margem
+            const randomX = Math.random() * (window.innerWidth - 300); 
+            const randomY = Math.random() * (window.innerHeight - 50);
 
+            textEl.style.left = `${randomX}px`;
+            textEl.style.top = `${randomY}px`;
+
+            // tamanho aleatório
+            textEl.style.fontSize = `${Math.random() * 2 + 0.5}rem`;
+
+            document.body.appendChild(textEl);
+			
+            const flashDuration = 750 + Math.random() * 1000; 
+            setTimeout(() => {
+                textEl.remove();
+            }, flashDuration);
+        }
+		
+		function loopKanye() {
+			flashKanyeText(); 
+			// aplicar flash background e txt
+			document.body.classList.toggle('bg-flash');
+
+			if (blinkSpeed > minSpeed) {
+				blinkSpeed = blinkSpeed * 0.95; 
+			}
+
+			setTimeout(loopKanye, blinkSpeed);
+		}
+
+        document.body.addEventListener('click', function() {
+            audio.play();
+            
+            // loop piscar texto
+            loopKanye();
+            
+        }, { once: true }); 
         
+        document.body.addEventListener('click', () => {
+            document.getElementById('yeezus').style.maxWidth = '100%';
+        });
+
     </script>
 
 </body>
